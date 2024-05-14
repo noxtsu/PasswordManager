@@ -43,9 +43,15 @@ struct ContentView: View {
     }
 
     private func addItem() {
+        var id: Int16 = 0
+        id += 1
         withAnimation {
             let newItem2 = Item(context: viewContext)
             newItem2.timestamp = Date()
+            
+            newItem2.id = id
+            newItem2.username = "hoge"
+            newItem2.password = "fuga"
 
             do {
                 try viewContext.save()
