@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct PasswordManagerApp: App {
-    let persistenceController = PersistenceController.shared
+    let persistenceController = PersistenceController()
 
     var body: some Scene {
         WindowGroup {

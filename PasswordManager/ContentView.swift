@@ -9,86 +9,37 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
-    @Environment(\.managedObjectContext) private var viewContext
-
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
-        animation: .default)
-    private var items: FetchedResults<Item>
-
+    @Environment(\.managedObjectContext) var viewContext
+    
+    @FetchRequest(sortDescriptors: [])
+    var passData: FetchedResults<PassData>
+    
     var body: some View {
-        NavigationView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp!, formatter: itemFormatter)")
-                    } label: {
-                        Text(item.timestamp!, formatter: itemFormatter)
-                    }
-                }
-                .onDelete(perform: deleteItems)
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
+        List {
+            ForEach(passData) { human in
+                if((human.name?.isEmpty) == false) {
+                    Text(human.name!)
                 }
             }
-            Text("Select an item")
-        }
-    }
-
-    private func addItem() {
-        var id: Int16 = 0
-        id += 1
-        withAnimation {
-            let newItem2 = Item(context: viewContext)
-            newItem2.timestamp = Date()
             
-            newItem2.id = id
-            newItem2.username = "hoge"
-            newItem2.password = "fuga"
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            Button(action: addPassData) {
+                Text("人間を増やす")
             }
         }
     }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            offsets.map { items[$0] }.forEach(viewContext.delete)
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
+    func addPassData() {
+        let newHuman = PassData(context: viewContext)
+        newHuman.name = "五十嵐"
+        
+        do {
+            try viewContext.save()
+        } catch {
+            fatalError("セーブに失敗")
         }
     }
 }
-
-private let itemFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .short
-    formatter.timeStyle = .medium
-    return formatter
-}()
-
 #Preview {
-    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    ContentView()
 }
 
 
