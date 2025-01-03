@@ -20,11 +20,31 @@ struct EditNoteView: View {
             }
 
             Section(header: Text("ログイン名")) {
-                TextEditor(text: $password.id)
+                HStack {
+                    TextEditor(text: $password.id)
+                    Button {
+                        // TODO ボタンタップのレスポンス追加する
+                        UIPasteboard.general.string = $password.id
+                    } label: {
+                        Image(systemName: "doc.on.doc")
+                            .font(.title)
+                            .frame(width: 15, height: 15)
+                    }
+                }
             }
             
             Section(header: Text("パスワード")) {
-                TextEditor(text: $password.password)
+                HStack {
+                    TextEditor(text: $password.password)
+                    Button {
+                        // TODO ボタンタップのレスポンス追加する
+                        UIPasteboard.general.string = $password.id
+                    } label: {
+                        Image(systemName: "doc.on.doc")
+                            .font(.title)
+                            .frame(width: 15, height: 15)
+                    }
+                }
             }
             
             Section {
