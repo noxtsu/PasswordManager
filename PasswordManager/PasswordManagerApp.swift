@@ -12,6 +12,7 @@ struct PasswordManagerApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .modelContainer(for: PassData.self)
         }
     }
 }
